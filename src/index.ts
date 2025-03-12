@@ -1,13 +1,13 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { WeatherTool } from './tools/weather.js';
+import { ProfileTool } from './tools/profile.js';
 
 const server = new McpServer({
-    name: 'weather',
+    name: 'outreach2day',
     version: '1.0.0',
 });
 
-new WeatherTool().register(server);
+new ProfileTool().register(server);
 
 const transport = new StdioServerTransport();
 
