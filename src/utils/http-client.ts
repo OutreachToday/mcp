@@ -14,7 +14,7 @@ if (!OUTREACH_API_URL) {
 }
 
 export const outreachClient = axios.create({
-    baseURL: OUTREACH_API_URL,
+    baseURL: `${OUTREACH_API_URL}/mcp_proxy`,
     headers: {
         'x-api-key': OUTREACH_API_KEY,
         'Content-Type': 'application/json',
