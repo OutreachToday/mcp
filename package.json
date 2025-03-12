@@ -1,0 +1,37 @@
+{
+    "name": "mcp",
+    "version": "1.0.0",
+    "main": "index.js",
+    "type": "module",
+    "bin": {
+        "outreach2day": "./build/index.js"
+    },
+    "scripts": {
+        "build": "tsc && chmod 755 build/index.js"
+    },
+    "files": [
+        "build"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/OutreachToday/mcp.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/OutreachToday/mcp/issues"
+    },
+    "homepage": "https://github.com/OutreachToday/mcp#readme",
+    "description": "",
+    "dependencies": {
+        "@modelcontextprotocol/sdk": "^1.7.0",
+        "axios": "^1.8.3",
+        "zod": "^3.24.2",
+        "zod-to-json-schema": "^3.24.3"
+    },
+    "devDependencies": {
+        "@types/node": "^22.13.10",
+        "typescript": "^5.8.2"
+    }
+}
