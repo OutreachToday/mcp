@@ -3,15 +3,15 @@ import { z } from 'zod';
 import { BaseTool } from '../utils/base-tool.js';
 import { outreachClient } from '../utils/http-client.js';
 
-export class ProfileTool extends BaseTool {
-    name = 'profile';
-    description = 'Get the profile for the current user';
+export class ApiKeysTool extends BaseTool {
+    name = 'api-keys';
+    description = 'Get the API keys for the current user';
 
     schema = z.object({});
 
     async execute() {
         try {
-            const { data } = await outreachClient.get('/profile');
+            const { data } = await outreachClient.get('/api-keys');
 
             return {
                 content: [

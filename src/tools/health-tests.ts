@@ -3,15 +3,21 @@ import { z } from 'zod';
 import { BaseTool } from '../utils/base-tool.js';
 import { outreachClient } from '../utils/http-client.js';
 
-export class ProfileTool extends BaseTool {
-    name = 'profile';
-    description = 'Get the profile for the current user';
+export class HealthTestsTool extends BaseTool {
+    name = 'health-tests';
+    description = 'Get the health tests for the workspace';
 
-    schema = z.object({});
+    schema = z.object({
+        workspaceId: z.string().describe('The ID of the workspace'),
+    });
 
-    async execute() {
+    async execute({ workspaceId }: z.infer<typeof this.schema>) {
         try {
-            const { data } = await outreachClient.get('/profile');
+            const { data } = await outreachClient.get('/health/get_tests', {
+                params: {
+                    workspaceId,
+                },
+            });
 
             return {
                 content: [
