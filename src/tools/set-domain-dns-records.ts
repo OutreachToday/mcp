@@ -9,7 +9,7 @@ export class SetDomainDnsRecordsTool extends BaseTool {
 
     schema = z.object({
         domain: z.string().describe('The domain to set the DNS records for'),
-        workspaceId: z.string().describe('The ID of the workspace'),
+        workspaceId: z.number().describe('The ID of the workspace'),
         records: z
             .array(
                 z.object({

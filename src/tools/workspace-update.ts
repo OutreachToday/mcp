@@ -3,29 +3,30 @@ import { z } from 'zod';
 import { BaseTool } from '../utils/base-tool.js';
 import { outreachClient } from '../utils/http-client.js';
 
-export class ChangeDomainsRedirectsTool extends BaseTool {
-    name = 'change-domains-redirects';
-    description = 'Change the redirects for a domain';
+export class WorkspaceUpdateTool extends BaseTool {
+    name = 'workspace-update';
+    description = 'Update a workspace';
 
     schema = z.object({
-        domains: z
-            .array(z.string())
-            .describe('The domains to change redirects for'),
-        redirectDomain: z.string().describe('The domain to redirect to'),
-        workspaceId: z.number().describe('The ID of the workspace'),
+        workspaceId: z.number().describe('The ID of the workspace to update'),
+        project_name: z.string().describe('The name of the workspace'),
+        description: z
+            .string()
+            .optional()
+            .describe('The description of the workspace'),
     });
 
     async execute({
-        domains,
-        redirectDomain,
         workspaceId,
+        project_name,
+        description,
     }: z.infer<typeof this.schema>) {
         try {
-            const { data } = await outreachClient.post('/domains_redirects', {
+            const { data } = await outreachClient.post('/workspace/update', {
                 body: {
-                    domains,
-                    redirectDomain,
                     workspace_id: workspaceId,
+                    project_name,
+                    description,
                 },
             });
 

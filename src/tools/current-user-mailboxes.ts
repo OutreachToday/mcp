@@ -8,7 +8,7 @@ export class CurrentUserMailboxesTool extends BaseTool {
     description = 'Get the mailboxes for the current user';
 
     schema = z.object({
-        workspaceId: z.string().describe('The ID of the workspace'),
+        workspaceId: z.number().describe('The ID of the workspace'),
     });
 
     async execute({ workspaceId }: z.infer<typeof this.schema>) {

@@ -8,17 +8,15 @@ export class DomainsHealthTool extends BaseTool {
     description = 'Get the health of the domains';
 
     schema = z.object({
-        workspaceId: z.string().describe('The ID of the workspace'),
+        workspaceId: z.number().describe('The ID of the workspace'),
     });
 
     async execute({ workspaceId }: z.infer<typeof this.schema>) {
         try {
-            const { data } = await outreachClient.get(
-                '/domains/health',
-                {
-                    params: {
-                        workspaceId,
-                    },
+            const { data } = await outreachClient.get('/domains/health', {
+                params: {
+                    workspaceId,
+                },
             });
 
             return {

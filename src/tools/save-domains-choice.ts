@@ -9,7 +9,7 @@ export class SaveDomainsChoiceTool extends BaseTool {
 
     schema = z.object({
         domains: z.array(z.string()).describe('The domains to save'),
-        workspaceId: z.string().describe('The ID of the workspace'),
+        workspaceId: z.number().describe('The ID of the workspace'),
         redirectDomain: z.string().describe('The domain to redirect to'),
         contactInfo: z.object({
             first_name: z.string().describe('The first name of the contact'),

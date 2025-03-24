@@ -8,7 +8,7 @@ export class WorkspaceCreditsTool extends BaseTool {
     description = 'Get the credits for the workspace';
 
     schema = z.object({
-        workspaceId: z.string().describe('The ID of the workspace'),
+        workspaceId: z.number().describe('The ID of the workspace'),
     });
 
     async execute({ workspaceId }: z.infer<typeof this.schema>) {

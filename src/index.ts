@@ -20,6 +20,12 @@ import { ReplaceRestrictedDomainsTool } from './tools/replace-restricted-domains
 import { SaveMailboxChoiceTool } from './tools/save-mailbox-choice.js';
 import { UpdateMailboxesTool } from './tools/update-mailboxes.js';
 import { UpgradeSubscriptionTool } from './tools/upgrade-subscription.js';
+import { WorkspaceAddUserTool } from './tools/workspace-add-user.js';
+import { WorkspaceDeleteUserTool } from './tools/workspace-delete-user.js';
+import { WorkspaceUpdateTool } from './tools/workspace-update.js';
+import { WorkspaceUsersTool } from './tools/workspace-users.js';
+import { WorkspaceCreateTool } from './tools/workspace-create.js';
+
 const server = new McpServer({
     name: 'outreach2day',
     version: '1.0.0',
@@ -42,6 +48,11 @@ new WorkspaceCreditsTool().register(server);
 new WorkspaceSubscriptionStatusTool().register(server);
 new WorkspaceInvoicesTool().register(server);
 new WorkspacePaymentMethodTool().register(server);
+new WorkspaceAddUserTool().register(server);
+new WorkspaceDeleteUserTool().register(server);
+new WorkspaceUpdateTool().register(server);
+new WorkspaceUsersTool().register(server);
+new WorkspaceCreateTool().register(server);
 new HealthTestsTool().register(server);
 new DomainsHealthTool().register(server);
 new DomainsDnsRecordsTool().register(server);

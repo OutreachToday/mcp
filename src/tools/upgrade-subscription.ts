@@ -9,7 +9,7 @@ export class UpgradeSubscriptionTool extends BaseTool {
 
     schema = z.object({
         newMaxMailboxes: z.number().describe('The new max mailboxes'),
-        workspaceId: z.string().describe('The ID of the workspace'),
+        workspaceId: z.number().describe('The ID of the workspace'),
     });
 
     async execute({
