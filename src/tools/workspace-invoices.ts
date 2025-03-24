@@ -8,7 +8,7 @@ export class WorkspaceInvoicesTool extends BaseTool {
     description = 'Get the invoices for the workspace';
 
     schema = z.object({
-        workspaceId: z.string().describe('The ID of the workspace'),
+        workspaceId: z.number().describe('The ID of the workspace'),
         limit: z.number().describe('The limit of invoices to return'),
     });
 

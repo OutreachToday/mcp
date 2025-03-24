@@ -17,7 +17,7 @@ export class ReplaceRestrictedDomainsTool extends BaseTool {
             )
             .describe('The domains to replace'),
 
-        workspaceId: z.string().describe('The ID of the workspace'),
+        workspaceId: z.number().describe('The ID of the workspace'),
     });
 
     async execute({ domains, workspaceId }: z.infer<typeof this.schema>) {

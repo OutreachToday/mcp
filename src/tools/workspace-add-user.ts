@@ -3,29 +3,23 @@ import { z } from 'zod';
 import { BaseTool } from '../utils/base-tool.js';
 import { outreachClient } from '../utils/http-client.js';
 
-export class SaveMailboxChoiceTool extends BaseTool {
-    name = 'save-mailbox-choice';
-    description = 'Save the mailbox choice';
+export class WorkspaceAddUserTool extends BaseTool {
+    name = 'workspace-add-user';
+    description = 'Add a user to the workspace';
 
     schema = z.object({
-        mailboxes: z
-            .array(
-                z.object({
-                    address: z.string().email(),
-                    firstName: z.string(),
-                    lastName: z.string(),
-                })
-            )
-            .describe('The mailboxes to save'),
         workspaceId: z.number().describe('The ID of the workspace'),
+        email: z.string().email().describe('The email of the user to add'),
+        role: z.string().describe('The role of the user'),
     });
 
-    async execute({ mailboxes, workspaceId }: z.infer<typeof this.schema>) {
+    async execute({ workspaceId, email, role }: z.infer<typeof this.schema>) {
         try {
-            const { data } = await outreachClient.post('/save_mailbox_choice', {
+            const { data } = await outreachClient.post('/workspace/add_user', {
                 body: {
-                    mailboxes,
                     workspace_id: workspaceId,
+                    email,
+                    role,
                 },
             });
 

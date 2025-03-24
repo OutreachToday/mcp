@@ -3,19 +3,24 @@ import { z } from 'zod';
 import { BaseTool } from '../utils/base-tool.js';
 import { outreachClient } from '../utils/http-client.js';
 
-export class CurrentUserDomainsTool extends BaseTool {
-    name = 'current-user-domains';
-    description = 'Get the domains for the current user';
+export class WorkspaceCreateTool extends BaseTool {
+    name = 'workspace-create';
+    description = 'Create a workspace';
 
     schema = z.object({
-        workspaceId: z.number().describe('The ID of the workspace'),
+        project_name: z.string().describe('The name of the workspace'),
+        description: z
+            .string()
+            .optional()
+            .describe('The description of the workspace'),
     });
 
-    async execute({ workspaceId }: z.infer<typeof this.schema>) {
+    async execute({ project_name, description }: z.infer<typeof this.schema>) {
         try {
-            const { data } = await outreachClient.get('/current_user_domains', {
-                params: {
-                    workspaceId,
+            const { data } = await outreachClient.post('/workspace/create', {
+                body: {
+                    project_name,
+                    description,
                 },
             });
 

@@ -8,7 +8,7 @@ export class DomainsDnsRecordsTool extends BaseTool {
     description = 'Get the DNS records for the domains';
 
     schema = z.object({
-        workspaceId: z.string().describe('The ID of the workspace'),
+        workspaceId: z.number().describe('The ID of the workspace'),
         domain: z.string().describe('The domain to get the DNS records for'),
     });
 
