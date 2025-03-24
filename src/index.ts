@@ -29,6 +29,9 @@ new HealthTestsTool().register(server);
 new DomainsHealthTool().register(server);
 new DomainsDnsRecordsTool().register(server);
 
-const transport = new StdioServerTransport();
+export function startServer() {
+    const transport = new StdioServerTransport();
+    server.connect(transport);
+}
 
-server.connect(transport);
+startServer();
