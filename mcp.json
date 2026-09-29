@@ -3,7 +3,7 @@
     "outreach2day": {
       "url": "https://public.outreach2day.com/mcp",
       "headers": {
-        "Authorization": "Bearer ${env:O2D_API_KEY}"
+        "Authorization": "Bearer ${O2D_API_KEY}"
       }
     }
   }

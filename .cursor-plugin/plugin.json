@@ -9,8 +9,27 @@
     "url": "https://outreach2day.com"
   },
   "homepage": "https://outreach2day.com/mcp",
-  "repository": "https://github.com/outreach2day/mcp",
+  "repository": "https://github.com/OutreachToday/mcp",
   "license": "MIT",
   "logo": "assets/logo.png",
-  "keywords": ["cold-email", "email-deliverability", "mailboxes", "warm-up", "mcp"]
+  "keywords": [
+    "cold-email",
+    "email-deliverability",
+    "mailboxes",
+    "warm-up",
+    "mcp"
+  ],
+  "mcpServers": "mcp.json",
+  "skills": "skills/",
+  "variables": {
+    "type": "object",
+    "properties": {
+      "O2D_API_KEY": {
+        "type": "string",
+        "title": "Outreach2day API key",
+        "description": "API key (ot2d_...) from https://app.outreach2day.com/api-keys. Optional: get_pricing, check_domains and check_copy work without a key."
+      }
+    },
+    "required": []
+  }
 }
