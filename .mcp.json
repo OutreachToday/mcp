@@ -2,10 +2,7 @@
   "mcpServers": {
     "outreach2day": {
       "type": "http",
-      "url": "https://public.outreach2day.com/mcp",
-      "headers": {
-        "Authorization": "Bearer ${O2D_API_KEY:-}"
-      }
+      "url": "https://public.outreach2day.com/mcp"
     }
   }
 }
