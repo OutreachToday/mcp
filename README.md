@@ -12,6 +12,7 @@ Remote MCP server for [Outreach2day](https://outreach2day.com), cold email infra
 [![Install in VS Code](https://img.shields.io/badge/VS_Code-Install_Server-0098FF?style=flat-square&logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=outreach2day&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A//public.outreach2day.com/mcp%22%7D)
 [![Install in VS Code Insiders](https://img.shields.io/badge/VS_Code_Insiders-Install_Server-24bfa5?style=flat-square&logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=outreach2day&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A//public.outreach2day.com/mcp%22%7D&quality=insiders)
 [![Claude Code](https://img.shields.io/badge/Claude_Code-claude_mcp_add-D97757?style=flat-square&logo=claude&logoColor=white)](#claude-code)
+[![Grok Build](https://img.shields.io/badge/Grok_Build-grok_mcp_add-000000?style=flat-square)](#grok-build)
 
 ## Install
 
@@ -119,6 +120,46 @@ codex mcp add outreach2day --url https://public.outreach2day.com/mcp
 codex mcp login outreach2day
 ```
 
+### Grok Build
+
+```sh
+grok mcp add --transport http outreach2day https://public.outreach2day.com/mcp
+```
+
+Then in a `grok` session open `/mcps`, select `outreach2day` and press `i` to sign in. Grok Build also opens the sign-in page on first use and keeps the token in `~/.grok/mcp_credentials.json`.
+
+As a plugin (MCP server plus the skills below):
+
+```sh
+grok plugin install OutreachToday/mcp
+```
+
+Grok Build reads the `.claude-plugin/` manifest in this repo, so no separate manifest is needed. It also loads servers from `~/.claude.json`, `.cursor/mcp.json` and `.mcp.json`, so a server you added for Claude Code or Cursor shows up in Grok Build too.
+
+### grok.com
+
+Open [grok.com/connectors](https://grok.com/connectors), click New Connector, then Custom. Enter a name and the Server URL `https://public.outreach2day.com/mcp`, then sign in in the pop-up window. On Grok Business and Enterprise an admin adds the connector first: console.x.ai, Grok Business, Connectors, Add Connector, Other.
+
+### xAI API
+
+A remote MCP tool in the Responses API. xAI sends `authorization` as the whole Authorization header, so keep the `Bearer` prefix:
+
+```sh
+curl https://api.x.ai/v1/responses \
+  -H "Authorization: Bearer $XAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "grok-4.7",
+    "input": "Which of my mailboxes are ready to send?",
+    "tools": [{
+      "type": "mcp",
+      "server_label": "outreach2day",
+      "server_url": "https://public.outreach2day.com/mcp",
+      "authorization": "Bearer '"$OUTREACH2DAY_API_KEY"'"
+    }]
+  }'
+```
+
 ### Claude Desktop and claude.ai
 
 Customize, Connectors, Add custom connector, URL `https://public.outreach2day.com/mcp`. Claude opens the sign-in page when you connect.
@@ -134,6 +175,8 @@ Keep the key in an environment variable, `OUTREACH2DAY_API_KEY`, and let the cli
 - Cursor, VS Code, Windsurf: `"headers": { "Authorization": "Bearer ${env:OUTREACH2DAY_API_KEY}" }`
 - Gemini CLI: `"headers": { "Authorization": "Bearer ${OUTREACH2DAY_API_KEY}" }`
 - Codex CLI: `codex mcp add outreach2day --url https://public.outreach2day.com/mcp --bearer-token-env-var OUTREACH2DAY_API_KEY`
+- Grok Build: `grok mcp add --transport http outreach2day https://public.outreach2day.com/mcp --header 'Authorization: Bearer ${OUTREACH2DAY_API_KEY}'`
+- xAI API: `"authorization": "Bearer <key>"` in the `mcp` tool (above)
 - Claude Desktop and claude.ai: no key; use the connector above.
 
 Step-by-step guides per client: <https://outreach2day.com/mcp>.
