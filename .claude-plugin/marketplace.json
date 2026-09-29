@@ -1,0 +1,20 @@
+{
+  "name": "outreach2day",
+  "owner": {
+    "name": "Outreach2day",
+    "email": "support@outreach2day.com"
+  },
+  "metadata": {
+    "description": "Outreach2day plugins for Claude Code"
+  },
+  "plugins": [
+    {
+      "name": "outreach2day",
+      "source": "./",
+      "description": "Cold email infrastructure MCP server (domains, mailboxes, warm-up, campaigns) and cold email skills.",
+      "version": "1.0.0",
+      "category": "productivity",
+      "homepage": "https://outreach2day.com/mcp"
+    }
+  ]
+}

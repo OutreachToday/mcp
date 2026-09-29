@@ -1,0 +1,16 @@
+{
+  "name": "outreach2day",
+  "displayName": "Outreach2day",
+  "version": "1.0.0",
+  "description": "Cold email infrastructure: check and buy domains, create mailboxes with SPF, DKIM and DMARC, run warm-up and campaigns, read replies.",
+  "author": {
+    "name": "Outreach2day",
+    "email": "support@outreach2day.com",
+    "url": "https://outreach2day.com"
+  },
+  "homepage": "https://outreach2day.com/mcp",
+  "repository": "https://github.com/outreach2day/mcp",
+  "license": "MIT",
+  "logo": "assets/logo.png",
+  "keywords": ["cold-email", "email-deliverability", "mailboxes", "warm-up", "mcp"]
+}
