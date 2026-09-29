@@ -41,7 +41,7 @@ claude mcp add --transport http outreach2day https://public.outreach2day.com/mcp
 Or install this repository as a plugin (MCP server plus the skills below). Set `O2D_API_KEY` in your environment first:
 
 ```sh
-/plugin marketplace add outreach2day/mcp
+/plugin marketplace add OutreachToday/mcp
 /plugin install outreach2day@outreach2day
 ```
 

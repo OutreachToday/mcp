@@ -8,7 +8,15 @@
     "url": "https://outreach2day.com"
   },
   "homepage": "https://outreach2day.com/mcp",
-  "repository": "https://github.com/outreach2day/mcp",
+  "repository": "https://github.com/OutreachToday/mcp",
   "license": "MIT",
-  "keywords": ["cold-email", "email-deliverability", "mailboxes", "warm-up", "domains", "mcp", "outbound"]
+  "keywords": [
+    "cold-email",
+    "email-deliverability",
+    "mailboxes",
+    "warm-up",
+    "domains",
+    "mcp",
+    "outbound"
+  ]
 }
