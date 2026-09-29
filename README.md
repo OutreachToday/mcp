@@ -92,7 +92,15 @@ Refresh the MCP servers in Cascade and sign in when asked.
 
 ### Gemini CLI
 
-`~/.gemini/settings.json`:
+As an extension (the MCP server, `GEMINI.md` context and the skills below):
+
+```sh
+gemini extensions install https://github.com/OutreachToday/mcp
+```
+
+Then run `/mcp auth outreach2day` in Gemini CLI. The manifest is `gemini-extension.json` in this repo.
+
+Or add the server by hand to `~/.gemini/settings.json`:
 
 ```json
 {

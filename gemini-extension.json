@@ -1,0 +1,11 @@
+{
+  "name": "outreach2day",
+  "version": "1.0.0",
+  "description": "Cold email infrastructure: domains, mailboxes with SPF, DKIM and DMARC, warm-up, campaigns and replies.",
+  "mcpServers": {
+    "outreach2day": {
+      "httpUrl": "https://public.outreach2day.com/mcp"
+    }
+  },
+  "contextFileName": "GEMINI.md"
+}
