@@ -27,7 +27,7 @@ Windows (PowerShell):
 irm https://outreach2day.com/install.ps1 | iex
 ```
 
-Or with Node.js 18+: `npx -y outreach2day-mcp`. Read the script before running it: `curl -fsSL https://outreach2day.com/install | less`. Options: `--client <ids>`, `--dry-run`, `--uninstall`.
+Or with Node.js 18+: `npx -y outreach2day-mcp`. Read the script before running it: `curl -fsSL https://outreach2day.com/install | less`. Options: `--client <ids>`, `--use-key`, `--dry-run`, `--uninstall`.
 
 At the end it prints the sign-in step for each client. The first sign-in opens a browser page where you log in to Outreach2day and approve access (`read`, `write`, `billing`).
 
@@ -119,9 +119,14 @@ Customize, Connectors, Add custom connector, URL `https://public.outreach2day.co
 
 For clients without MCP OAuth, headless machines and CI. Create a key at <https://app.outreach2day.com/api-keys>. Keys have `read`, `write` and `billing` scopes; a read-only key cannot create or buy anything.
 
-- Installer: `--use-key` asks for the key (input hidden); `--key ot2d_...` or `O2D_API_KEY=ot2d_...` pass it without a prompt.
-- By hand: send the header `Authorization: Bearer ot2d_...`, e.g. `claude mcp add --transport http -s user outreach2day https://public.outreach2day.com/mcp --header "Authorization: Bearer ot2d_..."`.
-- Clients that only run local servers: `npx -y mcp-remote https://public.outreach2day.com/mcp --header "Authorization:${O2D_AUTH}"` with `O2D_AUTH="Bearer ot2d_..."`.
+Keep the key in an environment variable, `OUTREACH2DAY_API_KEY`, and let the client config name the variable, not the key:
+
+- Installer: `--use-key` asks for the key (input hidden); `--key ot2d_...` or `O2D_API_KEY=ot2d_...` pass it without a prompt. It saves the key to `~/.config/outreach2day/env` (mode 0600, loaded from your shell profile; Windows: a user environment variable) and writes only the variable name into each config.
+- Claude Code: `claude mcp add --transport http -s user outreach2day https://public.outreach2day.com/mcp --header 'Authorization: Bearer ${OUTREACH2DAY_API_KEY}'`
+- Cursor, VS Code, Windsurf: `"headers": { "Authorization": "Bearer ${env:OUTREACH2DAY_API_KEY}" }`
+- Gemini CLI: `"headers": { "Authorization": "Bearer ${OUTREACH2DAY_API_KEY}" }`
+- Codex CLI: `codex mcp add outreach2day --url https://public.outreach2day.com/mcp --bearer-token-env-var OUTREACH2DAY_API_KEY`
+- Claude Desktop and claude.ai: no key; use the connector above.
 
 Step-by-step guides per client: <https://outreach2day.com/mcp>.
 
