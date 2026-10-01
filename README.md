@@ -2,35 +2,32 @@
 
 # Outreach2day MCP server
 
-Remote MCP server for [Outreach2day](https://outreach2day.com), cold email infrastructure. Your AI assistant checks and buys domains, creates mailboxes with SPF, DKIM and DMARC, runs warm-up, builds campaigns and reads replies. It quotes every order; you approve it and pay on a Stripe-hosted page. The server never charges a card.
+Remote MCP server for [Outreach2day](https://outreach2day.com), cold email infrastructure. Your AI assistant checks and buys domains, creates mailboxes with SPF, DKIM and DMARC, runs warm-up, builds campaigns and reads replies. It quotes every order; you approve it and pay on a Stripe-hosted page.
 
 - Endpoint: `https://public.outreach2day.com/mcp` (Streamable HTTP)
-- Auth: OAuth 2.1. Add the URL to your client, and the client opens an Outreach2day sign-in page on first use. No API key needed. Clients without OAuth, scripts and CI can send an API key instead: `Authorization: Bearer ot2d_...`.
-- Pricing: $2.50 per mailbox a month with warm-up, sending engine and analytics included, minimum 12 mailboxes. Domains: $13 a year for .com, $5 for .info.
+- Auth: OAuth 2.1. Add the URL to your assistant and sign in with your Outreach2day account in the browser. An API key is only for CI and headless setups (see API key below)
+- Pricing: $2.50 per mailbox a month with warm-up, sending engine and analytics included, minimum 12 mailboxes. Domains: $13 a year for .com, $5 for .info
 
+[![Add to Claude](https://img.shields.io/badge/Claude-Add_connector-D97757?style=flat-square&logo=claude&logoColor=white)](https://claude.ai/customize/connectors?modal=add-custom-connector&connectorName=Outreach2day&connectorUrl=https%3A%2F%2Fpublic.outreach2day.com%2Fmcp)
 [![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en/install-mcp?name=outreach2day&config=eyJ1cmwiOiJodHRwczovL3B1YmxpYy5vdXRyZWFjaDJkYXkuY29tL21jcCJ9)
 [![Install in VS Code](https://img.shields.io/badge/VS_Code-Install_Server-0098FF?style=flat-square&logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=outreach2day&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A//public.outreach2day.com/mcp%22%7D)
 [![Install in VS Code Insiders](https://img.shields.io/badge/VS_Code_Insiders-Install_Server-24bfa5?style=flat-square&logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=outreach2day&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A//public.outreach2day.com/mcp%22%7D&quality=insiders)
 [![Claude Code](https://img.shields.io/badge/Claude_Code-claude_mcp_add-D97757?style=flat-square&logo=claude&logoColor=white)](#claude-code)
 [![Grok Build](https://img.shields.io/badge/Grok_Build-grok_mcp_add-000000?style=flat-square)](#grok-build)
 
-## Install
+## Connect
 
-Add the server, then sign in from your client. One command for Claude Code, Claude Desktop, Cursor, VS Code, Windsurf, Gemini CLI and Codex CLI. It adds the server URL to each client it finds, backs up each config file and keeps your other servers. It asks for no key:
+Server URL: `https://public.outreach2day.com/mcp`
 
-```sh
-curl -fsSL https://outreach2day.com/install | sh
-```
+Add the URL to your AI assistant, then sign in with your Outreach2day account on the page the assistant opens. Turn on Prepare orders on that page to let the assistant quote orders. Claude, Cursor and VS Code also install from the buttons above.
 
-Windows (PowerShell):
+### Claude (claude.ai, Claude Desktop and mobile)
 
-```powershell
-irm https://outreach2day.com/install.ps1 | iex
-```
+Click **Add to Claude** above, or open Customize, Connectors, click + and choose Add custom connector. Paste `https://public.outreach2day.com/mcp`, click Add, then Connect. Claude opens the Outreach2day sign-in page. On Team and Enterprise an Owner adds the connector first under Organization settings, Connectors; members then click Connect.
 
-Or with Node.js 18+: `npx -y outreach2day-mcp`. Read the script before running it: `curl -fsSL https://outreach2day.com/install | less`. Options: `--client <ids>`, `--use-key`, `--dry-run`, `--uninstall`.
+### ChatGPT
 
-At the end it prints the sign-in step for each client. The first sign-in opens a browser page where you log in to Outreach2day and approve access (`read`, `write`, `billing`).
+Settings, Security and login: turn on Developer mode. Go to chatgpt.com/plugins, click +, name the app Outreach2day, enter `https://public.outreach2day.com/mcp` under Connection and create it. In a new chat, add Outreach2day from the tools menu; ChatGPT opens the Outreach2day sign-in page on the first tool call. In ChatGPT the app works with an existing account; orders are placed in the web app at https://app.outreach2day.com.
 
 ### Claude Code
 
@@ -65,11 +62,11 @@ Cursor shows the server as needing sign-in; sign in from Cursor Settings, MCP.
 
 ### VS Code
 
-Click **Install in VS Code** above, or add to your `mcp.json`:
+Click **Install in VS Code** above, or add the server to `.mcp.json` at the workspace root or to `~/.copilot/mcp-config.json` for every workspace:
 
 ```json
 {
-  "servers": {
+  "mcpServers": {
     "outreach2day": { "type": "http", "url": "https://public.outreach2day.com/mcp" }
   }
 }
@@ -77,9 +74,9 @@ Click **Install in VS Code** above, or add to your `mcp.json`:
 
 Start the server (MCP: List Servers); VS Code asks you to sign in.
 
-### Windsurf
+### Windsurf (Devin Desktop)
 
-`~/.codeium/windsurf/mcp_config.json`:
+Cascade reads `~/.config/devin/mcp_config.json` (Windows: `%APPDATA%\devin\mcp_config.json`; older Windsurf builds: `~/.codeium/windsurf/mcp_config.json`):
 
 ```json
 {
@@ -90,6 +87,8 @@ Start the server (MCP: List Servers); VS Code asks you to sign in.
 ```
 
 Refresh the MCP servers in Cascade and sign in when asked.
+
+In Devin CLI: `devin mcp add -s user outreach2day https://public.outreach2day.com/mcp`, then `devin mcp login outreach2day`.
 
 ### Gemini CLI
 
@@ -140,7 +139,40 @@ Grok Build reads the `.claude-plugin/` manifest in this repo, so no separate man
 
 Open [grok.com/connectors](https://grok.com/connectors), click New Connector, then Custom. Enter a name and the Server URL `https://public.outreach2day.com/mcp`, then sign in in the pop-up window. On Grok Business and Enterprise an admin adds the connector first: console.x.ai, Grok Business, Connectors, Add Connector, Other.
 
-### xAI API
+### Install script
+
+Optional. Adds the server URL to Claude Code, Cursor, VS Code, Windsurf, Gemini CLI and Codex CLI on this computer, backs up each config file and keeps your other servers. Claude and ChatGPT use the steps above. At the end it prints the sign-in step for each client.
+
+```sh
+curl -fsSL https://outreach2day.com/install | sh
+```
+
+Windows (PowerShell):
+
+```powershell
+irm https://outreach2day.com/install.ps1 | iex
+```
+
+Read the script before running it: `curl -fsSL https://outreach2day.com/install | less`. Options: `--client <ids>`, `--use-key`, `--dry-run`, `--uninstall`.
+
+### API key for CI and headless setups
+
+For clients without MCP OAuth, headless machines and CI. Create a key at <https://app.outreach2day.com/api-keys>. Keys have `read`, `write` and `billing` scopes; a read-only key cannot create or buy anything.
+
+Keep the key in the `OUTREACH2DAY_API_KEY` environment variable and reference the variable in the client config:
+
+- Installer: `--use-key` asks for the key (input hidden); `--key ot2d_...` or `O2D_API_KEY=ot2d_...` pass it without a prompt. It saves the key to `~/.config/outreach2day/env` (mode 0600, loaded from your shell profile; Windows: a user environment variable) and writes only the variable name into each config
+- Claude Code: `claude mcp add --transport http -s user outreach2day https://public.outreach2day.com/mcp --header 'Authorization: Bearer ${OUTREACH2DAY_API_KEY}'`
+- Cursor, VS Code, Windsurf: `"headers": { "Authorization": "Bearer ${env:OUTREACH2DAY_API_KEY}" }`
+- Gemini CLI: `"headers": { "Authorization": "Bearer ${OUTREACH2DAY_API_KEY}" }`
+- Codex CLI: `codex mcp add outreach2day --url https://public.outreach2day.com/mcp --bearer-token-env-var OUTREACH2DAY_API_KEY`
+- Grok Build: `grok mcp add --transport http outreach2day https://public.outreach2day.com/mcp --header 'Authorization: Bearer ${OUTREACH2DAY_API_KEY}'`
+- xAI API: `"authorization": "Bearer <key>"` in the `mcp` tool (below)
+- Claude and ChatGPT: sign in with the steps above
+
+Step-by-step guides per client: <https://outreach2day.com/mcp>.
+
+#### xAI API (Responses API)
 
 A remote MCP tool in the Responses API. xAI sends `authorization` as the whole Authorization header, so keep the `Bearer` prefix:
 
@@ -159,27 +191,6 @@ curl https://api.x.ai/v1/responses \
     }]
   }'
 ```
-
-### Claude Desktop and claude.ai
-
-Customize, Connectors, Add custom connector, URL `https://public.outreach2day.com/mcp`. Claude opens the sign-in page when you connect.
-
-### API key instead of sign-in
-
-For clients without MCP OAuth, headless machines and CI. Create a key at <https://app.outreach2day.com/api-keys>. Keys have `read`, `write` and `billing` scopes; a read-only key cannot create or buy anything.
-
-Keep the key in an environment variable, `OUTREACH2DAY_API_KEY`, and let the client config name the variable, not the key:
-
-- Installer: `--use-key` asks for the key (input hidden); `--key ot2d_...` or `O2D_API_KEY=ot2d_...` pass it without a prompt. It saves the key to `~/.config/outreach2day/env` (mode 0600, loaded from your shell profile; Windows: a user environment variable) and writes only the variable name into each config.
-- Claude Code: `claude mcp add --transport http -s user outreach2day https://public.outreach2day.com/mcp --header 'Authorization: Bearer ${OUTREACH2DAY_API_KEY}'`
-- Cursor, VS Code, Windsurf: `"headers": { "Authorization": "Bearer ${env:OUTREACH2DAY_API_KEY}" }`
-- Gemini CLI: `"headers": { "Authorization": "Bearer ${OUTREACH2DAY_API_KEY}" }`
-- Codex CLI: `codex mcp add outreach2day --url https://public.outreach2day.com/mcp --bearer-token-env-var OUTREACH2DAY_API_KEY`
-- Grok Build: `grok mcp add --transport http outreach2day https://public.outreach2day.com/mcp --header 'Authorization: Bearer ${OUTREACH2DAY_API_KEY}'`
-- xAI API: `"authorization": "Bearer <key>"` in the `mcp` tool (above)
-- Claude Desktop and claude.ai: no key; use the connector above.
-
-Step-by-step guides per client: <https://outreach2day.com/mcp>.
 
 ## Tools
 
@@ -225,9 +236,9 @@ Not exposed: deleting or cancelling anything, credential reveal, card-on-file pu
 
 `skills/` holds three agent skills from <https://outreach2day.com/skills> that work with or without the server:
 
-- `email-dns-audit`: SPF, DKIM, DMARC, MX audit per sending domain with exact record fixes.
-- `cold-email-spintax-linter`: finds spintax and merge variable errors before launch.
-- `cold-email-capacity-planner`: mailboxes, domains, timeline and cost from a volume target.
+- `email-dns-audit`: SPF, DKIM, DMARC, MX audit per sending domain with exact record fixes
+- `cold-email-spintax-linter`: finds spintax and merge variable errors before launch
+- `cold-email-capacity-planner`: mailboxes, domains, timeline and cost from a volume target
 
 ## Privacy and support
 
@@ -241,4 +252,4 @@ MIT for the contents of this repository (configs, skills, docs). The Outreach2da
 
 ## Legacy local server
 
-The `legacy/` folder holds the earlier stdio MCP server (Node, `OUTREACH_API_KEY`), which took an API key. It is superseded by the hosted server at `https://public.outreach2day.com/mcp` and is no longer maintained.
+The earlier stdio server (Node, API key) is kept at the `legacy-stdio` tag and is no longer maintained. Use the hosted server above.
