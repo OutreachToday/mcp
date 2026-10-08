@@ -19,7 +19,7 @@ State them at the top of every plan and let the user override each:
 | Mailboxes per domain | 5 (max) | Conservative setups use 2 to 3 |
 | Spare mailboxes | 20 to 30% | Warming in reserve for rotation and replacements |
 | Warm-up before first cold email | 14 days minimum | Longer is fine |
-| Ramp after warm-up | about 2 weeks | For example 5, 10, 15, 20, then 25 a day |
+| Cold volume ramp from day 14 | about 2 weeks | For example 5, 10, 15, 20, then 25 a day; warm-up keeps running |
 
 ## Step 1. Get the target
 
@@ -51,7 +51,7 @@ Monthly = mailboxes_total x mailbox price. Domains = domains x yearly price, pai
 |---|---|
 | 0 | Buy domains, set SPF, DKIM, DMARC, create mailboxes, start warm-up |
 | 1 to 2 | Warm-up only |
-| 3 to 4 | Ramp cold volume from about 5 to 25 a day per mailbox |
+| 3 to 4 | Ramp cold volume from about 5 to 25 a day per mailbox; warm-up keeps running |
 | 5 | Full volume on active mailboxes; spares keep warming |
 
 If the user needs full volume sooner, the answer is more mailboxes at lower daily volume, not higher volume per mailbox.
