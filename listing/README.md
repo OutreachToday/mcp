@@ -5,7 +5,7 @@ Copy for the AI app store listings of the Outreach2day MCP server. One file per 
 | Store | File | Submit at |
 |---|---|---|
 | Claude Connectors Directory and the Claude plugin | [claude.md](claude.md) | https://claude.ai/directory/manage |
-| ChatGPT and Codex Plugins Directory | [chatgpt.md](chatgpt.md) | https://platform.openai.com/plugins |
+| ChatGPT and Codex Plugins Directory | [chatgpt.md](chatgpt.md), package in [../openai-plugin](../openai-plugin/README.md) | https://platform.openai.com/plugins |
 | Cursor Marketplace | [cursor.md](cursor.md) | https://cursor.com/marketplace/publish |
 | Gemini CLI extensions gallery | [gemini-cli.md](gemini-cli.md) | Crawled daily from the repo topic |
 | Muse (Meta) Connector Platform | [muse.md](muse.md) | https://muse.ai/platform |

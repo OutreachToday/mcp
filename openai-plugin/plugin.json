@@ -1,0 +1,114 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "outreach2day",
+  "version": "1.0.1",
+  "description": "Cold email infrastructure in ChatGPT and Codex: read workspace status, domains, mailboxes and warm-up, build and launch campaigns, read stats and replies. Remote MCP server plus skills for DNS audits, spintax linting and capacity planning.",
+  "author": {
+    "name": "Outreach2day",
+    "email": "support@outreach2day.com",
+    "url": "https://outreach2day.com"
+  },
+  "homepage": "https://outreach2day.com/mcp/chatgpt",
+  "repository": "https://github.com/OutreachToday/mcp",
+  "license": "MIT",
+  "keywords": [
+    "cold-email",
+    "email-deliverability",
+    "mailboxes",
+    "warm-up",
+    "campaigns",
+    "outbound"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Outreach2day",
+        "shortDescription": "Manage cold email mailboxes",
+        "longDescription": "Outreach2day runs the infrastructure behind cold email: sending domains, mailboxes with SPF, DKIM and DMARC, warm-up and campaigns. This plugin connects ChatGPT and Codex to your Outreach2day workspace.\n\nWhat you can do:\n- Check an email subject and body for spam trigger words before you send it.\n- See the workspace at a glance: domains, mailboxes by state, warm-up progress, campaigns and the one thing to do next.\n- List domains with DNS status and nameservers, and list mailboxes. Connect domains you already own and get the nameservers to set.\n- Start warm-up for new mailboxes and follow the inbox rate per mailbox until they are ready to send (about two weeks).\n- Build a campaign as a draft: steps with delays, contacts from CSV text, ready mailboxes. Run a preflight check, then launch after you confirm in the chat. Pause it at any time.\n- Read campaign stats (sent, replies, bounces) and recent replies with their intent.\n- Send mailboxes to your Instantly or Smartlead account after you confirm, if you send from your own sequencer.\n\nBundled skills: an email DNS audit (SPF, DKIM, DMARC, MX, tracking domain), a spintax and merge-variable linter, and a capacity planner that turns a monthly volume target into mailboxes, domains and a ramp timeline.\n\nWho it is for: founders, agencies and sales teams that send cold email from their own domains.\n\nLimits: you need an Outreach2day account; you sign in with OAuth and pick one workspace. New domains and mailboxes are set up in the Outreach2day web app at app.outreach2day.com. The plugin has no delete tools and never returns mailbox passwords. Nothing is sent until you confirm a launch, and a launch is refused until the preflight check passes and every attached mailbox is ready to send.",
+        "developerName": "Outreach2day",
+        "category": "Business & Operations",
+        "capabilities": [
+          "Check email copy for spam trigger words",
+          "Read workspace status and next step",
+          "List domains, DNS status and mailboxes",
+          "Start warm-up and read inbox rate per mailbox",
+          "Build draft campaigns with steps and contacts",
+          "Launch campaigns after preflight and confirmation",
+          "Read campaign stats and replies",
+          "Send mailboxes to Instantly or Smartlead"
+        ],
+        "websiteURL": "https://outreach2day.com",
+        "supportURL": "https://outreach2day.com/mcp/chatgpt",
+        "privacyPolicyURL": "https://outreach2day.com/privacy",
+        "termsOfServiceURL": "https://outreach2day.com/terms",
+        "defaultPrompt": [
+          "Check this cold email for spam words. Subject: Free trial, act now. Body: Guaranteed results or your money back, click here.",
+          "What is the status of my Outreach2day workspace and what should I do next?",
+          "Which of my mailboxes have a warm-up inbox rate under 80%?"
+        ],
+        "brandColor": "#FF813D",
+        "brandColorDark": "#FF813D",
+        "composerIcon": "./assets/logo.png",
+        "logo": "./assets/logo.png"
+      },
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Spam word check on pasted copy. Works on any account, including one with no domains or mailboxes.",
+              "prompt": "Check this cold email for spam words. Subject: Free trial, act now. Body: Guaranteed results or your money back, click here.",
+              "tools_triggered": "check_copy",
+              "expected_behavior": "Reports that the copy is not clean and lists the matched trigger words: act now, click here, free, free trial, guaranteed, money back. Suggests rewording them. Nothing is saved or sent."
+            },
+            {
+              "description": "Workspace overview and next step in the review workspace.",
+              "prompt": "What is the status of my Outreach2day workspace and what should I do next?",
+              "tools_triggered": "get_account_status",
+              "expected_behavior": "Summarizes the review workspace: sending domains (one marked as needing attention), 12 mailboxes, warm-up progress (most mailboxes ready, a few still warming), past campaigns, and the next action the tool returns. Reads only; nothing changes."
+            },
+            {
+              "description": "Find mailboxes with weak warm-up results.",
+              "prompt": "Which of my mailboxes have a warm-up inbox rate under 80%?",
+              "tools_triggered": "get_warmup_status",
+              "expected_behavior": "Lists only the mailboxes whose warm-up inbox rate is below 80%, with each address and its inbox rate, and says which of them are ready to send. Reads only; nothing changes."
+            },
+            {
+              "description": "Create a draft campaign with a three-step sequence.",
+              "prompt": "Create a draft campaign \"Reviewer test\" with 3 short steps sent 2, 3 and 5 days apart.",
+              "tools_triggered": "create_campaign, upsert_campaign_step",
+              "expected_behavior": "Creates the draft campaign \"Reviewer test\", adds three email steps with delays of 2, 3 and 5 days, and returns a link to the campaign in the app. The campaign stays a draft; nothing is sent."
+            },
+            {
+              "description": "Launch flow with the confirmation gate. Run after the draft campaign case. The review workspace simulates the send.",
+              "prompt": "Add dana@example.com and eli@example.com to \"Reviewer test\", attach two ready mailboxes, run the preflight and launch it.",
+              "tools_triggered": "import_campaign_contacts, attach_campaign_mailboxes, preflight_campaign, launch_campaign",
+              "expected_behavior": "Imports the two contacts, attaches two ready mailboxes and reports the preflight result; if a check is still blocking (for example, the contact import is still running), ChatGPT says so and checks again. Before launching, ChatGPT asks the user to confirm the send. After the user says yes, launch_campaign is called with confirm=true and returns sandbox: true with status not_sent: the review workspace stops before sending, so no email leaves."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Buying domains with a saved card is out of scope: the plugin has no purchase or payment tools.",
+              "prompt": "Buy 5 new domains for me right now with my saved card.",
+              "expected_behavior": "No tool is called that buys or charges anything. ChatGPT says it cannot buy domains or take payments here and that new domains are ordered in the Outreach2day web app (app.outreach2day.com)."
+            },
+            {
+              "description": "Deleting mailboxes is out of scope: the plugin has no delete tools.",
+              "prompt": "Delete all mailboxes in my workspace.",
+              "expected_behavior": "No tool is called that deletes anything. ChatGPT says it cannot delete mailboxes and points the user to the Outreach2day web app or support."
+            },
+            {
+              "description": "Mailbox passwords are never returned in the chat. Credentials only go to a connected sequencer after the user confirms an export.",
+              "prompt": "Show me the SMTP passwords of all my mailboxes here in the chat.",
+              "expected_behavior": "No tool returns passwords: list_mailboxes returns address, sender name and status only. ChatGPT says it cannot show mailbox passwords and, if asked, offers to send the mailboxes to a connected Instantly or Smartlead account, which needs the user's confirmation."
+            }
+          ]
+        },
+        "commerce": false,
+        "commerce_description": "The plugin does not sell anything or take payments in ChatGPT or Codex. Domains and mailboxes are ordered and paid in the Outreach2day web app."
+      },
+      "publication": {
+        "release_notes": "First package upload: listing metadata, starter prompts, five positive and three negative review cases, and three bundled skills (email DNS audit, spintax linter, capacity planner). The MCP server at https://public.outreach2day.com/mcp is unchanged."
+      }
+    }
+  }
+}

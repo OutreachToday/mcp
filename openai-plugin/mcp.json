@@ -1,0 +1,9 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {
+    "outreach2day": {
+      "type": "streamable-http",
+      "url": "https://public.outreach2day.com/mcp"
+    }
+  }
+}

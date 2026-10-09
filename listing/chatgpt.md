@@ -2,71 +2,24 @@
 
 Submit at https://platform.openai.com/plugins. One listing covers ChatGPT and Codex.
 
-On ChatGPT the server hides `quote_order` and `create_checkout` (tool profile `openai`), so this listing has 21 tools and orders are placed in the Outreach2day web app. The copy below leaves out ordering.
+The listing is no longer typed into forms: it ships in the plugin ZIP. Source and build steps: [`openai-plugin/`](../openai-plugin/README.md). Build with `python3 scripts/build_openai_plugin.py` and upload `dist/outreach2day-openai-<version>.zip`.
 
-**Name** [12]
-```
-Outreach2day
-```
+| What | Where |
+|---|---|
+| Name, subtitle, description, category, capabilities, links, starter prompts, icon | `openai-plugin/plugin.json`, `extensions.com.openai.interface` |
+| 5 positive and 3 negative test cases, commerce, release notes | `openai-plugin/plugin.json`, `extensions.com.openai.review` and `publication` |
+| MCP server | `openai-plugin/mcp.json` |
+| Skills | `skills/` (the capacity planner without our prices, see the README) |
+| Reviewer access, demo recording, annotation justifications | `openai-plugin/review-details.md`, entered in the dashboard |
 
-**Short description, ≤80** [59]
-```
-Manage cold email domains, mailboxes, warm-up and campaigns
-```
+On ChatGPT the server lists 18 tools (tool profile `openai`, backend `src/api/mcp/profiles.py`). It hides `quote_order`, `create_checkout`, `get_pricing`, `get_order`, `check_domains` and `suggest_domains`, and its texts mention no buying or prices. The listing copy follows that: orders are placed in the Outreach2day web app.
 
-**Description, ≤500** [366]
-```
-Connect ChatGPT to your Outreach2day workspace. Check domain availability, list domains and mailboxes, start warm-up and read inbox rate per mailbox, build draft campaigns with steps and contacts, launch after a preflight check, read stats and replies, and sync mailboxes to Instantly and Smartlead. The app has no delete tools and does not return mailbox passwords.
-```
+**Tools in this profile (18):** check_copy, get_account_status, list_domains, list_mailboxes, get_warmup_status, list_sequencers, preflight_campaign, get_campaign_stats, list_replies, connect_own_domains, start_warmup, create_campaign, upsert_campaign_step, import_campaign_contacts, attach_campaign_mailboxes, pause_campaign, launch_campaign, export_mailboxes_to_sequencer.
 
-**Category:** Business / Productivity
-
-**MCP server URL**
-```
-https://public.outreach2day.com/mcp
-```
+**Starter prompts.** The first one is pre-filled after install and most users send it, so it works on an account with no domains or mailboxes (check_copy with the copy inline). Changing prompts or their order needs a new package version and review.
 
 **Authentication:** OAuth. ChatGPT registers itself (CIMD or dynamic client registration). The consent page grants `read` and `write`.
 
 **Domain verification:** the token from the portal goes into the `OPENAI_APPS_CHALLENGE` env var of the public API; the server returns it at `https://public.outreach2day.com/.well-known/openai-apps-challenge`.
 
-**Website / privacy / terms / support**
-```
-https://outreach2day.com/mcp
-https://outreach2day.com/privacy
-https://outreach2day.com/terms
-support@outreach2day.com
-```
-
-**Tools in this profile (21):** get_pricing, check_domains, check_copy, get_account_status, get_order, list_domains, list_mailboxes, get_warmup_status, list_sequencers, preflight_campaign, get_campaign_stats, list_replies, connect_own_domains, start_warmup, create_campaign, upsert_campaign_step, import_campaign_contacts, attach_campaign_mailboxes, pause_campaign, launch_campaign, export_mailboxes_to_sequencer.
-
-**Starter prompts**
-```
-Check if tryacme.com, getacme.co and acmehq.com are available.
-```
-```
-Show my mailboxes with a warm-up inbox rate under 80% this week.
-```
-```
-Create a draft campaign "Q4 agencies" with 3 steps 2, 3 and 5 days apart.
-```
-
-## Test cases: 5 positive
-
-| # | Prompt | Tools | Expected result |
-|---|---|---|---|
-| 1 | Is tryacme.com available? And getacme.co? | check_domains | Status per domain; available names listed; next step points to the web app for ordering |
-| 2 | How much do 12 mailboxes cost a month? | get_pricing | $2.50 per mailbox, $30 for 12; domains $13 a year for .com and $5 for .info |
-| 3 | Check this cold email for spam words: "Subject: Free money guaranteed ..." | check_copy | Matched trigger words and a suggestion to reword them |
-| 4 | Show my mailboxes with a warm-up inbox rate under 80% | get_warmup_status | Matching mailboxes with inbox rate; nothing is changed |
-| 5 | Create a draft campaign "Q4 agencies" with 3 steps 2, 3 and 5 days apart | create_campaign, upsert_campaign_step ×3 | Draft campaign with 3 steps and a link to it in the app; nothing is sent |
-
-## Test cases: 3 negative
-
-| # | Prompt | Expected behaviour |
-|---|---|---|
-| 1 | Buy 5 domains for me now with my saved card | No ordering tool in this profile. ChatGPT says orders are placed in the Outreach2day web app and gives the link |
-| 2 | Delete all my mailboxes | No delete tool. ChatGPT says it can't delete mailboxes and points to the app or support |
-| 3 | Launch campaign "Q4 agencies" right now (mailboxes still warming) | launch_campaign asks for confirmation and refuses while preflight is not ready; ChatGPT reports the blocking checks |
-
-**Screenshots:** none. The plugin has no UI.
+**Screenshots:** none. The server returns no UI, and the portal allows screenshots only with UI.
